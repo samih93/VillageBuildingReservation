@@ -1,0 +1,146 @@
+﻿@model VillageBuildingReservation.Models.Reservation
+
+@{
+    ViewBag.Title = "اضافة حجز";
+}
+
+<h2>اضافة حجز</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+<div class="form-horizontal">
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(model => model.ReservationName, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-4">
+            @Html.EditorFor(model => model.ReservationName, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.ReservationName, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.ReservationDate, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-4">
+            @Html.EditorFor(model => model.ReservationDate, new { htmlAttributes = new { @class = "form-control datepicker" } })
+            @Html.ValidationMessageFor(model => model.ReservationDate, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.StartTime, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-4">
+            @Html.EditorFor(model => model.StartTime, new { htmlAttributes = new { @class = "form-control material-timepicker", @data_dtp = "dtp_ljcQ8" } })
+            @Html.ValidationMessageFor(model => model.StartTime, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.EndTime, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-4">
+            @Html.EditorFor(model => model.EndTime, new { htmlAttributes = new { @class = "form-control material-timepicker" } })
+            @Html.ValidationMessageFor(model => model.EndTime, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.DocumentNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-4">
+            @Html.EditorFor(model => model.DocumentNumber, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.DocumentNumber, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Blocks.First().Name, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-4">
+            <select name="listOfBlocksDDL"
+                    id="listOfBlocksDDL"
+                    class="selectpicker show-menu-arrow ddl_Blocks"
+                    data_live_search="true"
+                    data_width="100%"
+                    multiple="multiple"
+                    data_actions_box="true">
+                @foreach (VillageBuildingReservation.Models.Block block in (List<VillageBuildingReservation.Models.Block>)ViewBag.listOfBlocks)
+                {
+                    if (Model.Blocks.Contains(block))
+                    {
+                        <option value="@block.Id" optiongroup="@block.Zone.Name" selected>@block.FullBlockName</option>
+                    }
+                    else
+                    {
+                        <option value="@block.Id" optiongroup="@block.Zone.Name">@block.FullBlockName</option>
+                    }
+
+                }
+            </select>
+            <label for="chkReserveAll">حجز القرية بكاملها</label>
+            <input id="chkReserveAll" name="chkReserveAll" type="checkbox" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.IsSpareReservation, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-4">
+            @Html.EditorFor(model => model.IsSpareReservation, new { htmlAttributes = new { @class = "" } })
+            @Html.ValidationMessageFor(model => model.IsSpareReservation, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    @*<div class="form-group">
+            @Html.LabelFor(model => model.IsNeedBarkya, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                @Html.EditorFor(model => model.IsNeedBarkya, new { htmlAttributes = new { @class = "" } })
+                @Html.ValidationMessageFor(model => model.IsNeedBarkya, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
+
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Notes, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-4">
+            @Html.EditorFor(model => model.Notes, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Notes, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Bombs.First().Name, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-4">
+            @Html.ListBox("listOfBombsDDL", (IEnumerable<SelectListItem>)ViewBag.listBombs, new
+       {
+           @class = "selectpicker show-menu-arrow",
+           data_live_search = "true",
+           data_width = "100%",
+           multiple = "multiple"
+       })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="اضافة" class="btn btn-lg btn-primary" />
+        </div>
+    </div>
+
+    <div>
+        @Html.ActionLink("الرجوع الى القائمة", "Index", "", new { @class = "action_link" })
+    </div>
+    <hr />
+</div>
+
+}
+
+@section Styles {
+    @Styles.Render("~/Content/bootstrap-selectpicker")
+    @Styles.Render("~/Content/bootstrap-datetimepicker")
+
+
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/bootstrap-selectpicker")
+    @Scripts.Render("~/bundles/bootstrap-datetimepicker")
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,114 @@
+﻿@using VillageBuildingReservation.Models
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title -  حجز المباني</title>
+    <link rel="shortcut icon" href="~/Media/Village-reservation-favicon.png" />
+    @RenderSection("Styles", required: false)
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+
+</head>
+<body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <img class="img_headr_left" runat="server" src="~/Media/ma3had.png" />
+        <img class="img_headr_right" runat="server" src="~/Media/ma3had.png" />
+        <div class="container">
+            <div class="navbar-header">
+
+
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse collapse">
+                <h1 class="app_title">معهد قوى الأمن الداخلي - المدرسة المشتركة  - حجز المباني  </h1>
+                <ul class="nav navbar-nav">
+
+                    @if (@Request.IsAuthenticated)
+                    {
+                        if (User.IsInRole("admin"))
+                        {
+                            <li>@Html.ActionLink("الاعتدة المستخدمة", "Index", "Bombs", null, new { @class = "listbomblink" })</li>
+                            <li>@Html.ActionLink("الحجوزات", "Index", "Reservations", null, new { @class = "listreservationlink" })</li>
+                        }
+                        else
+                        {
+                            if (User.IsInRole("general"))
+                            {
+                                <li>@Html.ActionLink("الحجوزات", "Index", "Reservations", null, new { @class = "listreservationlink" })</li>
+                            }
+                            else
+                                    if (User.IsInRole("SuperAdmin"))
+                            {
+                                <li>@Html.ActionLink("الاعتدة المستخدمة", "Index", "Bombs", null, new { @class = "listbomblink" })</li>
+                                <li>@Html.ActionLink("الحجوزات", "Index", "Reservations", null, new { @class = "listreservationlink" })</li>
+                                <li>@Html.ActionLink("Add New Password", "AddnewPassword", "Account", null, null)</li>
+                                <li>@Html.ActionLink("Register New User", "Register", "Account", null, null)</li>
+                                <li>@Html.ActionLink("Manage User Role", "ListOfRoles", "Administration", null, null)</li>
+                            }
+
+                        }
+                        <li>@Html.ActionLink("خريطة القرية", "VillageMap", "Reservations", null, new { @class = "villagemaplink" })</li>
+                    }
+                </ul>
+                @*if (User.IsInRole("admin"))
+                    {
+                        <ul class="nav navbar-nav">
+                            <li>@Html.ActionLink("التخصص", "Index", "Specifications")</li>
+                        </ul>
+                        <ul class="nav navbar-nav">
+                            <li>@Html.ActionLink("الضباط", "Index", "Officers")</li>
+                        </ul>
+                        <ul class="nav navbar-nav">
+                            <li>@Html.ActionLink("رزنامة الدورات", "Index", "Tournaments")</li>
+                        </ul>
+                        <ul class="nav navbar-nav">
+                            <li>@Html.ActionLink("الرزنامة الأساسية", "Calendar_M_AND_T", "Missions")</li>
+                        </ul>
+                    }
+                    else
+                    {
+                        if (User.IsInRole("general"))
+                        {
+                            <ul class="nav navbar-nav">
+                                <li>@Html.ActionLink("الضباط", "Index", "Officers")</li>
+                            </ul>
+
+                            <ul class="nav navbar-nav">
+                                <li>@Html.ActionLink("الرزنامة الأساسية", "Calendar_M_AND_T", "Missions")</li>
+                            </ul>
+                        }
+                    }*@
+
+
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @{ MessagingSystem msg = (MessagingSystem)TempData["message"];}
+        @if (msg != null)
+        {
+            @Html.Raw(MessagingSystem.GenerateMessage(msg.Message, msg.MessageType))
+        }
+        @RenderBody()
+        <hr />
+        @*<footer>
+                <p>&copy; @DateTime.Now.Year - Officer Mission</p>
+            </footer>*@
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("Scripts", required: false)
+    @Scripts.Render("~/bundles/custom")
+
+</body>
+</html>

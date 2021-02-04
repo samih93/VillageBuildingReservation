@@ -1,0 +1,684 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+::-webkit-input-placeholder {
+    text-align: center;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+    text-align: center;
+}
+
+::-moz-placeholder { /* Firefox 19+ */
+    text-align: center;
+}
+
+:-ms-input-placeholder {
+    text-align: center;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    margin-top: 3.5%;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+button,
+textarea {
+    /*max-width: 280px;*/
+}
+
+    input[type=button] {
+        /*max-width: 280px;*/
+    }
+
+.dropdown.bootstrap-select {
+    margin-right: 30px;
+}
+
+.ui-datepicker {
+    width: auto;
+    color: #4B6C9E;
+}
+
+    .ui-datepicker .ui-datepicker-close,
+    .ui-datepicker .ui-datepicker-current {
+        font-size: 15px;
+        font-weight: 600;
+    }
+
+    .ui-datepicker .ui-state-default,
+    .ui-datepicker .ui-widget-content .ui-state-default,
+    .ui-datepicker .ui-widget-header .ui-state-default {
+        color: #4B6C9E;
+    }
+
+    .ui-datepicker .ui-datepicker-calendar span {
+        color: #4B6C9E;
+    }
+
+    .ui-datepicker .ui-datepicker-prev span,
+    .ui-datepicker .ui-datepicker-next span {
+        display: initial;
+        position: initial;
+    }
+
+
+
+    .ui-datepicker .ui-datepicker-prev,
+    .ui-datepicker .ui-datepicker-next {
+        top: 5px;
+        text-align:center;
+        margin-left:15px;
+        cursor: pointer;
+    }
+
+    .ui-datepicker .ui-datepicker-next {
+        margin-right: 4px;
+    }
+    .ui-datepicker .ui-datepicker-prev {
+        left: -3px;
+    }
+
+
+    .ui-datepicker .ui-state-default,
+    .ui-datepicker .ui-widget-content .ui-state-default,
+    .ui-datepicker .ui-widget-header .ui-state-default {
+        text-align: center;
+    }
+
+.navigator_green_month {
+    direction: ltr;
+}
+
+.month_traditional_event {
+    text-align: center;
+    box-shadow: 3px 3px 3px 3px;
+}
+
+.month_traditional_cornerright_inner {
+    display: none !important;
+}
+
+.month_traditional_header_inner {
+    background: -webkit-gradient( linear, left top, left bottom, from(#777), to(#666)) !important;
+    color: #ffffff !important;
+}
+
+#calHolder > div:last-child {
+    display: none !important;
+}
+
+.month_traditional_corner {
+    height: 0px !important;
+}
+
+.month_traditional_main {
+    direction: ltr;
+}
+
+.month_traditional_event .month_traditional_event_inner {
+    /*background:unset !important;*/
+    text-align: center;
+    font-weight: 600;
+}
+
+#monthName {
+    font-size: 50px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+
+#ui-datepicker-div {
+    z-index: 999 !important;
+}
+
+.bubbleContainer {
+    direction: rtl;
+    font-size: 16px;
+}
+
+    .bubbleContainer td {
+        vertical-align: top;
+    }
+
+.alert {
+    margin-top: 30px;
+}
+
+div .alert {
+    font-size: 19px;
+    font-weight: bold;
+    text-align: center;
+}
+.alert_without_building{
+    background-color:yellow;
+    border-color:yellow;
+    color :black;
+    margin-top:0px;
+}
+.alert_without_building_and_need_barkya {
+    background-color: yellow;
+    border-color: yellow;
+    color: black;
+    width: 50%;
+    float: right;
+    margin-top: 0px;
+}
+.alert_need_barkya {
+    background-color: red;
+    border-color: red;
+    color: black;
+    margin-top: 0px;
+}
+.alert_need_barkya_and_without_building {
+    background-color: red;
+    border-color: red;
+    color: black;
+    width:50%;
+    margin-top: 0px;
+}
+.missionCell {
+    cursor: pointer;
+    color: white;
+    direction: rtl;
+}
+
+    .missionCell.isTournament {
+        background-color: red;
+    }
+
+    .missionCell.isNotTournament {
+        background-color: green;
+    }
+
+    .missionCell.isTournament, .missionCell.isNotTournament {
+        text-align: center;
+    }
+
+.missionPopupData {
+    direction: rtl;
+}
+
+    .missionPopupData tr td:nth-child(2) {
+        width: 100px;
+    }
+
+    .missionPopupData td {
+        /*width: 120px;*/
+        text-align: right;
+        font-size: 17px;
+    }
+
+    .missionPopupData tr td:not(:last-child) {
+        font-weight: bold;
+    }
+
+
+.fancybox-content {
+    color: white;
+    background-color: #4b6c9e;
+}
+
+.block_free {
+    width: 18px;
+    height: 18px;
+    background: green;
+}
+
+.block__pure_reserved, .reservation_need_barkya {
+    width: 18px;
+    height: 18px;
+    background: red;
+}
+ .reservationEmpty {
+    width: 18px;
+    height: 18px;
+    background: yellow;
+}
+.block_spare_reserved {
+    width: 18px;
+    height: 18px;
+    background: orange;
+}
+.resrvation_need_barkya_and_Empty {
+    width: 18px;
+    height: 18px;
+    background: orange;
+}
+.block_mixed_reserved {
+    width: 18px;
+    height: 18px;
+    background: blue;
+}
+
+a.btn_update {
+    font-size: 15px;
+    /*padding-top: 5px;
+    color: #19ff00;
+    padding: 5px;
+    font-family: sans-serif;
+    border: 1px solid #19ff00;
+    text-decoration: none;
+    box-shadow: 0.5px 0.5px 0.5px 0.5px*/
+}
+
+    a.btn_update:hover {
+        color: #f0ad4e;
+        background-color: #FFFFFF;
+        border-color: unset !important;
+    }
+
+table td:nth-child(2) {
+    text-align: center;
+}
+
+.missionPopupData tr td:not(:last-child) {
+    height: 25px;
+}
+
+.img_headr_left {
+    float: left;
+    width: 80px;
+    height: 80px;
+    padding: 10px;
+}
+
+.img_headr_right {
+    float: right;
+    width: 80px;
+    height: 80px;
+    padding: 10px;
+}
+
+.app_title {
+    text-align: center;
+    color: white;
+}
+
+.navbar-inverse {
+    /*background-color: #4b6c9e;*/
+    background-image: -webkit-linear-gradient(45deg,#3399fe 10%,transparent 20%,#3399fe 60%, transparent 85%,#3399fe);
+    /* background: linear-gradient(to right, rgb(47, 47, 47), rgb(17, 118, 243)); */
+    border-color: #f5f5f5;
+}
+
+    .navbar-inverse .navbar-nav > li > a {
+        color: white;
+        font-size: 18px;
+    }
+
+        .navbar-inverse .navbar-nav > li > a:hover, .navbar-inverse .navbar-nav > li > a:focus {
+            color: #ffffff;
+            background-color: #3399fe;
+        }
+
+#missionsCal th, #missionsCal td {
+    text-align: center;
+    border: 2px solid black;
+    vertical-align: middle;
+}
+
+#missionsCal th, #missionsCal td {
+}
+
+#missionsCal tr:hover {
+    background-color: #cacaca;
+}
+
+div.dropdown-menu.open {
+    /*max-height: 350px !important;*/
+}
+
+#officerRoleInMissionWrapper {
+    width: 65%;
+    margin-left: 16%;
+    /*background-image: -webkit-linear-gradient(45deg,#000AFF 10%,transparent 20%,#000AFF 60%, transparent 85%,#000AFF);*/
+}
+
+    #officerRoleInMissionWrapper td, #officerRoleInMissionWrapper td label {
+        text-align: center;
+        border: unset;
+        /*background-image: -webkit-linear-gradient(45deg,#000AFF 10%,transparent 20%,#000AFF 60%, transparent 85%,#000AFF);*/
+    }
+
+legend {
+    font-size: 24px;
+    font-weight: 800;
+    padding: 2px 4px 8px 4px;
+    border-bottom: none;
+    width: auto;
+    color: inherit;
+}
+
+fieldset {
+    margin: 1em 0px;
+    padding: 1em;
+    border: 1px solid #4b6c9e;
+}
+
+    fieldset p {
+        margin: 2px 12px 10px 10px;
+    }
+
+    fieldset.login label, fieldset.register label, fieldset.changePassword label {
+        display: block;
+    }
+
+    fieldset label.inline {
+        display: inline;
+    }
+
+.f_officerRoleInMission {
+    padding: 0
+}
+
+#addrow {
+    width: 40%;
+    margin: auto;
+    color: #ffffff;
+}
+
+.btn-primary, #addrow {
+    background-color: #2b6196;
+}
+
+.officerProfileImage {
+    margin-bottom: 20px;
+}
+
+/* USER PROFILE PAGE */
+.card {
+    margin-top: 20px;
+    padding: 30px;
+    background-color: rgba(214, 224, 226, 0.2);
+    -webkit-border-top-left-radius: 5px;
+    -moz-border-top-left-radius: 5px;
+    border-top-left-radius: 5px;
+    -webkit-border-top-right-radius: 5px;
+    -moz-border-top-right-radius: 5px;
+    border-top-right-radius: 5px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+    .card.hovercard {
+        position: relative;
+        padding-top: 0;
+        overflow: hidden;
+        text-align: center;
+        background-color: #fff;
+        background-color: rgba(255, 255, 255, 1);
+    }
+
+        .card.hovercard .card-background {
+            height: 130px;
+        }
+
+.card-background img {
+    -webkit-filter: blur(25px);
+    -moz-filter: blur(25px);
+    -o-filter: blur(25px);
+    -ms-filter: blur(25px);
+    filter: blur(25px);
+    /*margin-left: -100px;*/
+    margin-top: -200px;
+    /*min-width: 130%;*/
+}
+
+.card.hovercard .useravatar {
+    position: absolute;
+    top: 15px;
+    left: 0;
+    right: 0;
+}
+
+    .card.hovercard .useravatar img {
+        width: 100px;
+        height: 100px;
+        max-width: 100px;
+        max-height: 100px;
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        border-radius: 50%;
+        border: 5px solid rgba(255, 255, 255, 0.5);
+    }
+
+.card.hovercard .card-info {
+    position: absolute;
+    bottom: 14px;
+    left: 0;
+    right: 0;
+}
+
+    .card.hovercard .card-info .card-title {
+        padding: 0 5px;
+        font-size: 20px;
+        line-height: 1;
+        color: #ffffff;
+        background-color: rgba(255, 255, 255, 0.1);
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        border-radius: 4px;
+    }
+
+.card.hovercard .card-info {
+    overflow: hidden;
+    font-size: 12px;
+    line-height: 20px;
+    color: #737373;
+    text-overflow: ellipsis;
+}
+
+.card.hovercard .bottom {
+    padding: 0 20px;
+    margin-bottom: 17px;
+}
+
+.officerProfileCard .tab-content .row,
+.dataTables_info,
+.rtlDir {
+    direction: rtl;
+}
+
+.dataTables_info,
+.dataTables_length {
+    float: left;
+}
+
+.btn-pref .btn {
+    width: 100% !important;
+    -webkit-border-radius: 0 !important;
+}
+
+.btn-pref .btn-group {
+    width: 33.38%;
+    margin: auto;
+}
+
+
+.officerProfileCard .tab-content .col-md-6,
+.officerProfileCard .tab-content .col-md-6 label,
+.officerProfileCard .tab-content .col-md-4,
+.officerProfileCard .tab-content .col-md-4 label {
+    float: right !important;
+    font-size: 18px !important;
+}
+
+    .officerProfileCard .tab-content .col-md-6 label {
+        width: 110px;
+    }
+
+.officerProfileCard .btn-group button {
+    height: 50px;
+}
+
+.officerProfileCard .well {
+    min-height: 400px;
+}
+
+table.dataTable td, table.dataTable th, table.table td, table.table th {
+    text-align: center !important;
+    /*font-size: 18px;*/
+    vertical-align: middle !important;
+}
+
+.table-striped > tbody > tr:nth-child(odd) > td, .table-striped > tbody > tr:nth-child(odd) > th {
+    background-color: unset;
+}
+
+.officerProfileCard .tab-content .col-md-4 .col-md-4 {
+    width: auto;
+    font-size: 16px !important;
+}
+
+a .officerProfileImagecard-bkimg {
+    width: 100px;
+    height: 100px;
+}
+
+
+.OfficerTournamentDetails {
+    font-size: 18px;
+}
+
+    .OfficerTournamentDetails .col-md-4 {
+        float: right;
+    }
+
+.login_password, .login_email {
+    width: 50%;
+}
+
+.fancybox-caption {
+    font-size: 30px;
+    margin-bottom: 5%;
+}
+
+.action_link {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+/* LOGIN START */
+#login .container #login-row #login-column #login-box {
+    margin-top: 120px;
+    max-width: 450px;
+    min-height: 310px;
+    box-shadow: 0 2px 20px 1px #13187d;
+    border: 1px solid #9C9C9C;
+    background-color: #EAEAEA;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+    #login .container #login-row #login-column #login-box #login-form {
+        padding: 20px;
+    }
+
+        #login .container #login-row #login-column #login-box #login-form .form-group {
+            text-align: center;
+        }
+
+        #login .container #login-row #login-column #login-box #login-form .remember-me {
+            font-size: 16px;
+        }
+
+        #login .container #login-row #login-column #login-box #login-form input {
+            margin-bottom: 8px;
+        }
+
+        #login .container #login-row #login-column #login-box #login-form #register-link {
+            margin-top: -85px;
+        }
+
+.form_group_page_login {
+    width: 300px;
+    margin-left: 12%;
+}
+/* LOGIN END*/
+
+
+.imageMap{
+    max-width:100%;
+}
+
+.dtp .dtp-close > a > i {
+    color: #4b6c9e;
+}
+.dtp .dtp-close {
+    pointer-events: none;
+    cursor: default;
+    text-decoration: none;
+}
+ .dtp > .dtp-content > .dtp-date-view > header.dtp-header {
+    background-color: #4b6c9e;
+}
+
+.dropdown-header .text {
+    font-weight: bold;
+    font-size: 14px;
+    color: #0a11bb;
+}
+
+.reservationDateForm {
+    margin: 15px 0 15px 0;
+}
+.reservationDateForm label{
+    font-size:16px;
+}
+
+.reservationDateFilter {
+    margin: 0 auto;
+    width: 250px;
+    text-align: center;
+    margin-right: 20px;
+}
+table[id^=blockData] {
+    text-align: center;
+    font-size: 20px;
+    direction: rtl;
+}
+
+.ReservationPopupData thead tr {
+    background-color: #6b6969;
+    color: white
+}
+#Reservation_table
+{
+	direction:rtl;
+}
+.nav>li 
+{
+direction:rtl;
+}
+.reservDatefixedwidth {
+    width:50px;
+}
+
+.container.body-content {
+    max-width:1350px;
+}
+
+tr th:nth-last-child(1) {
+    width:37px !important;
+}
+
+.active {
+    background-color: #3399fe;
+}

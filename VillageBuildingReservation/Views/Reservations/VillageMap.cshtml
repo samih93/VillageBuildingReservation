@@ -1,0 +1,203 @@
+﻿@using VillageBuildingReservation.Models
+@using VillageBuildingReservation.Controllers
+@model IEnumerable<Reservation>
+
+@{
+    ViewBag.Title = "VillageMap";
+}
+
+<div class="container">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-horizontal reservationDateForm">
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <div class="row">
+                            @Html.Label("تاريخ الحجز", htmlAttributes: new { @class = "control-label col-md-4" })
+                            @Html.TextBox("reservationDate", (string)ViewBag.reservationDate, htmlAttributes: new { @class = "form-control col-md-4 text-box single-line datepicker reservationDateFilter" })
+                            <input type="submit" class="btn btn-md btn-primary col-md-1" value="بحث" /> 
+                            @if (@Request.IsAuthenticated && User.IsInRole("admin"))
+                            {
+                                     @Html.ActionLink("إضافة حجز", "Create", "Reservations", htmlAttributes: new { @class = "btn" })
+                            }
+                                </div>
+                    </div>
+                </div>
+                <div class="col-md-2"></div>
+            </div>
+        </div>
+    }
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-8">
+            <div class="col-md-1 block_free">
+            </div>
+            <div class="col-md-2">غير محجوز</div>
+
+            <div class="col-md-1 block__pure_reserved">
+            </div>
+            <div class="col-md-2">حجز عادي</div>
+            <div class="col-md-1 block_spare_reserved">
+            </div>
+            <div class="col-md-2">حجز احتياط</div>
+
+            <div class="col-md-1 block_mixed_reserved">
+            </div>
+            <div class="col-md-3">حجز عادي + حجز احتياط</div>
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+
+              
+
+    <div class="row">
+        <div class="col-md-12"><h1 class="text-center">@(Convert.ToString(ViewBag.reservationDate))</h1></div>
+        @{ var building = ((int)ViewBag.hasNoBuildingReservations > 0 && (int)ViewBag.hasReservationNeedBarkya > 0) ? "alert_without_building_and_need_barkya" : "alert_without_building"; }
+        @{ var barkya = ((int)ViewBag.hasReservationNeedBarkya > 0 && (int)ViewBag.hasNoBuildingReservations > 0) ? "alert_need_barkya_and_without_building" : "alert_need_barkya"; }
+
+        @if ((int)ViewBag.hasNoBuildingReservations > 0)
+        {
+            <div class="alert alert-dismissible show @building" role="alert">
+                <strong>يوجد حجوزات دون مبنى</strong>
+                @*<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>*@
+            </div>
+        }
+        @if ((int)ViewBag.hasReservationNeedBarkya > 0)
+        {
+            <div class="alert alert-dismissible show @barkya" role="alert">
+                <strong>يوجد حجوزات بحاجة الى برقية</strong>
+                @*<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>*@
+            </div>
+        }
+        <div class="col-md-12">
+            <!-- MAP IMAGE -->
+            <img src="~/Media/VillageMap.png" class="imageMap" id="MapImage" alt="" usemap="#map" />
+            <!-- MAP -->
+            <map name="map">
+                @{
+                    foreach (var B in (List<Block>)ViewBag.blocks)
+                    {
+                        string reservationStateColor = BlocksController.BlockReservationsStateColor(B, ViewBag.reservationDate);
+                        <area href="#" alt="#" data-key="@B.Id" data-color="@reservationStateColor" data-tooltip="@B.FullBlockName" data-id="@B.Id" shape="poly" coords="@B.Coordinates" />
+                    }
+                }
+            </map>
+            <!-- Reservation Data -->
+            <div class="hidden">
+                @{
+                    foreach (var B in (List<Block>)ViewBag.blocks)
+                    {
+                        //list of reservations for block
+                        List<Reservation> BlockReservations = BlocksController.BlockHasReservation(B, ViewBag.reservationDate);
+
+                        //if block has reservations on chosen date
+                        if (BlockReservations != null && BlockReservations.Count > 0)
+                        {
+                            <table id="blockData@(B.Id)" class="table table-bordered ReservationPopupData">
+                                <thead>
+                                    <tr>
+                                        <td>@Html.LabelFor(m => m.First().ReservationName)</td>
+                                        <td>@Html.LabelFor(m => m.First().ReservationDate)</td>
+                                        <td>@Html.LabelFor(m => m.First().StartTime)</td>
+                                        <td>@Html.LabelFor(m => m.First().EndTime)</td>
+                                        <td>@Html.LabelFor(m => m.First().Notes)</td>
+                                        <td>@Html.LabelFor(m => m.First().IsSpareReservation)</td>
+                                        @if (@Request.IsAuthenticated && User.IsInRole("admin"))
+                                        {
+                                            <td></td>
+                                        }
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (Reservation res in BlockReservations)
+                                    {
+                                        <tr>
+                                            <td>@res.ReservationName</td>
+                                            <td>@res.ReservationDate.ToString("yyyy-MM-dd")</td>
+                                            <td>@res.StartTime</td>
+                                            <td>@res.EndTime</td>
+                                            <td>@res.Notes</td>
+                                            <td>@(res.IsSpareReservation ? "نعم" : "كلا")</td>
+                                            @if (@Request.IsAuthenticated && User.IsInRole("admin"))
+                                            {
+                                                <td>@Html.ActionLink("تعديل", "Edit", new { id = res.Id }, new { @class = "btn btn-warning btn_update" })</td>
+                                            }
+
+
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                    }
+                }
+            </div>
+
+            <a data-fancybox class="fancybox hidden" id="reservationDataLink" href="javascript:;">clickme</a>
+        </div>
+    </div>
+    </div>
+@section Styles{
+    @Styles.Render("~/Content/fancybox")
+}
+
+@section Scripts {
+
+    <script type="text/javascript" src="~/Content/Lib/imageMapster/jquery.imagemapster.js"></script>
+    @Scripts.Render("~/bundles/fancybox")
+    <script type="text/javascript">
+        function renderAreas() {
+            var floor_img_obj = $("#MapImage");
+            //catching map name as '#map1' and transforming it into 'map1'
+            var associated_map_name = "map";
+            var areas = [];
+
+            $('map[name=' + associated_map_name + '] area').each(function (index, areaValue) {
+                var area = {
+                    key: $(areaValue).attr("data-id"),
+                    fillColor: $(areaValue).attr("data-color"),
+                    toolTip: $(areaValue).attr("data-tooltip"),
+                    isSelectable: false,
+                    selected: true
+                }
+                areas.push(area);
+            });
+            if (areas.length > 0) {
+                floor_img_obj.mapster({
+                    fillOpacity: 0.3,
+                    mapKey: 'data-key',
+                    showToolTip: true,
+                    clickNavigate: false,
+                    areas: areas
+                });
+            }
+        }
+
+        $(document).ready(function () {
+            renderAreas();
+
+            $("area").click(function () {
+                //if room reserved on the chosen date ( if not green)
+                if ($(this).attr("data-color") != "00ff0a") {
+
+                    //link #blockData2 where 2 is the id of area clicked
+                    var link = "#blockData" + $(this).attr("data-id");
+
+                    $("#reservationDataLink").attr("href", link);
+                    $("#reservationDataLink").click();
+                }
+            })
+        })
+           $('.villagemaplink').addClass("active");
+
+        
+    </script>
+}
+

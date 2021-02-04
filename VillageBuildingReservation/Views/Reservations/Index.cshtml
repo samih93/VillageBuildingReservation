@@ -1,0 +1,203 @@
+﻿@model VillageBuildingReservation.Models.ReservationVM
+@using VillageBuildingReservation.Controllers
+@using VillageBuildingReservation.Models
+
+@{
+    ViewBag.Title = "الحجوزات";
+}
+
+
+@using (Html.BeginForm("Index", "Reservations", FormMethod.Post))
+{
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.Label("السنة", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.DropDownListFor(m => m.Year,Model.DDlYear,new {@class="form-control" })
+
+            </div>
+            @Html.Label("الشهر", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-3">
+            @Html.DropDownListFor(m => m.Month, Model.DDlMonth, new { @class = "form-control" })
+
+        </div>
+            <div class="col-md-2">
+                <input type="submit" value="اختيار" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+<h2>الحجوزات</h2>
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-8">
+        <div class="col-md-1 reservation_need_barkya">
+        </div>
+        <div class="col-md-2">حجز بحاجة لبرقية</div>
+
+        <div class="col-md-1 reservationEmpty">
+        </div>
+        <div class="col-md-3">حجز دون تحديد مبنى</div>
+        <div class="col-md-1 resrvation_need_barkya_and_Empty">
+        </div>
+        <div class="col-md-4">حجز بحاجة لبرقية و دون تحديد مبنى</div>
+
+
+    </div>
+    <div class="col-md-1"></div>
+</div>
+@if (@Request.IsAuthenticated)
+{
+    if (User.IsInRole("admin"))
+    {
+        <p>
+            @Html.ActionLink("إضافة حجز", "Create", "", new { @class = "action_link" })
+        </p>
+    }
+}
+<h2 class="text-center">@GlobalController.ArabicMonthName(Model.Month) @Model.Year </h2>
+    <table class="table dataTable" id="Reservation_table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Reservations.First().ReservationName)
+                </th>
+                <th>
+                    @Html.DisplayName("المباني المحجوزة")
+                </th>
+                <th>
+                    @Html.DisplayName("الأعتدة المستخدمة")
+                </th>
+                <th class="reservDatefixedwidth">
+                    @Html.DisplayNameFor(model => model.Reservations.First().ReservationDate)
+                </th>
+
+                <th class="no-sort">
+                    @Html.DisplayNameFor(model => model.Reservations.First().StartTime)
+                </th>
+                <th class="no-sort">
+                    @Html.DisplayNameFor(model => model.Reservations.First().EndTime)
+                </th>
+                <th class="no-sort">
+                    @Html.DisplayNameFor(model => model.Reservations.First().DocumentNumber)
+                </th>
+                <th class="no-sort">
+                    @Html.DisplayNameFor(model => model.Reservations.First().Notes)
+                </th>
+                @if (@Request.IsAuthenticated)
+                {
+                    if (User.IsInRole("admin"))
+                    {
+                        <th></th>
+                    }
+                }
+            </tr>
+
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Reservations)
+            {
+                // red _ orange --> #FF4500
+                // orange --> ffa500
+                var backcolor = "";
+                bool isEmpty = ReservationsController.IsEmptyReservation(item);
+                // only reservation Empty and need barkya
+                if (isEmpty && item.IsNeedBarkya)
+                {
+                    backcolor = "orange"; //red - yellow -- > orange
+                }
+                if (isEmpty && !item.IsNeedBarkya)
+                {
+                    backcolor = "yellow"; //  yellow
+                }
+                if (!isEmpty && item.IsNeedBarkya)
+                {
+                    backcolor = "red"; // red
+                }
+                if (!isEmpty && !item.IsNeedBarkya)
+                {
+                    backcolor = "white"; // white
+                }
+
+
+                <tr style="background:@backcolor">
+                    <td style="font-size:16px">
+                        <b>@Html.DisplayFor(modelItem => item.ReservationName)</b>
+                    </td>
+                    <td>
+                        @ReservationsController.GetAllReservationBlocks_Of_Reservation(item)
+                    </td>
+                    <td>
+                        @ReservationsController.GetAllReservationBombs_Of_Reservation(item)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReservationDate)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StartTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EndTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DocumentNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Notes)
+                    </td>
+
+                    @if (@Request.IsAuthenticated)
+                    {
+                        if (User.IsInRole("admin"))
+                        {
+                            <td>
+
+                                @Html.ActionLink("تعديل", "Edit", new { id = item.Id }) @("|")
+                                @Html.ActionLink("حذف", "Delete", new { id = item.Id })
+                            </td>
+
+                        }
+                    }
+                </tr>
+            }
+
+        </tbody>
+    </table>
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/DataTables")
+    <script>
+        $(document).ready(function () {
+            if ($(".dataTable").length > 0) {
+                $('.dataTable').DataTable({
+                    "order": [],
+                    "pageLength": 100,
+                    "language": DataTablesLang,
+                    "columnDefs": [{
+                        "targets": 'no-sort',
+                        "orderable": false
+
+                    }]
+                });
+            }
+        });
+        $(document).ready(function () {
+            var $option = $('select > .input-sm').children('option[value=100]');
+            // and now set the option we want selected
+            $option.attr('selected', true);
+        });
+
+                $('.listreservationlink').addClass("active");
+
+    </script>
+ 
+}
+@section Styles {
+    @Styles.Render("~/Content/DataTables")
+}
