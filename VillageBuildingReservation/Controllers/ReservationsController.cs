@@ -466,5 +466,22 @@ namespace VillageBuildingReservation.Controllers
             ApplicationDbContext db = new ApplicationDbContext();
             return db.Reservations.Where(m=>m.ReservationDate.Year==date.Year && m.ReservationDate.Month == date.Month).OrderBy(x =>x.ReservationDate).ToList();
         }
+
+        [HttpPost]
+        public ActionResult ApproveAttendance(int id)
+        {
+            Reservation reservation = db.Reservations.Find(id);
+            if (reservation == null)
+            {
+                TempData["message"] = MessagingSystem.AddMessage("الحجز غير موجود", "danger");
+                return RedirectToAction("Index");
+            }
+
+            reservation.IsAttended = true;
+            db.Entry(reservation).State = EntityState.Modified;
+            db.SaveChanges();
+            TempData["message"] = MessagingSystem.AddMessage("تم تأكيد الحضور", "danger");
+            return RedirectToAction("Index");
+        }
     }
 }

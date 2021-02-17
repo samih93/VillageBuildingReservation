@@ -62,6 +62,7 @@
     <table class="table dataTable" id="Reservation_table">
         <thead>
             <tr>
+                <th>الحضور</th>
                 <th>
                     @Html.DisplayNameFor(model => model.Reservations.First().ReservationName)
                 </th>
@@ -100,6 +101,7 @@
         <tbody>
             @foreach (var item in Model.Reservations)
             {
+                var AttendanceTdId = "AttendanceTd" + item.Id;
                 // red _ orange --> #FF4500
                 // orange --> ffa500
                 var backcolor = "";
@@ -123,46 +125,69 @@
                 }
 
 
-                <tr style="background:@backcolor">
-                    <td style="font-size:16px">
-                        <b>@Html.DisplayFor(modelItem => item.ReservationName)</b>
-                    </td>
-                    <td>
-                        @ReservationsController.GetAllReservationBlocks_Of_Reservation(item)
-                    </td>
-                    <td>
-                        @ReservationsController.GetAllReservationBombs_Of_Reservation(item)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ReservationDate)
-                    </td>
-
-                    <td>
-                        @Html.DisplayFor(modelItem => item.StartTime)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.EndTime)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DocumentNumber)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Notes)
-                    </td>
-
-                    @if (@Request.IsAuthenticated)
+            <tr style="background:@backcolor">
+               
+                <td id="@AttendanceTdId" data-isAttented="@item.IsAttended" data-id="@item.Id">
+                    @if (item.IsAttended)
                     {
-                        if (User.IsInRole("admin"))
+                        <img class="AttendedImage" src="~/Media/IsAttendedImage.png" />
+                    }
+                    else
+                    {
+                        if(Request.IsAuthenticated)
                         {
-                            <td>
-
-                                @Html.ActionLink("تعديل", "Edit", new { id = item.Id }) @("|")
-                                @Html.ActionLink("حذف", "Delete", new { id = item.Id })
-                            </td>
-
+                            if (User.IsInRole("admin"))
+                            {
+                                <a id="@item.Id" class="btn btn-danger btnApproveAttendance">تأكيد الحضور</a>
+                            }
+                            else 
+                            {
+                               @Html.Label("-")
+                            }
                         }
                     }
-                </tr>
+
+                        </td>
+                <td style="font-size:16px">
+                    <b>@Html.DisplayFor(modelItem => item.ReservationName)</b>
+                </td>
+                <td>
+                    @ReservationsController.GetAllReservationBlocks_Of_Reservation(item)
+                </td>
+                <td>
+                    @ReservationsController.GetAllReservationBombs_Of_Reservation(item)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReservationDate)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DocumentNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Notes)
+                </td>
+
+                @if (@Request.IsAuthenticated)
+                {
+                    if (User.IsInRole("admin"))
+                    {
+                        <td>
+
+                            @Html.ActionLink("تعديل", "Edit", new { id = item.Id }) @("|")
+                            @Html.ActionLink("حذف", "Delete", new { id = item.Id })
+                        </td>
+
+
+                    }
+                }
+            </tr>
             }
 
         </tbody>
@@ -194,6 +219,35 @@
         });
 
                 $('.listreservationlink').addClass("active");
+
+    </script>
+
+    @* send  *@
+    <script>
+
+        $('.btnApproveAttendance').click(function () {
+        
+            var ReservationId  = this.id;
+            $.ajax({
+                url: "/Reservations/ApproveAttendance",
+                method: "Post",
+                data: {
+                    id: ReservationId,
+                }
+            }).done(function () {
+                $('#AttendanceTd' + ReservationId).empty();
+                $('#AttendanceTd' + ReservationId).html('<img class="AttendedImage" src="/Media/IsAttendedImage.png"/>');
+
+                console.log('#AttendanceTd' + ReservationId);
+
+
+                
+
+            }).
+                error(function () {
+                    alert("Update Error");
+                });
+        });
 
     </script>
  

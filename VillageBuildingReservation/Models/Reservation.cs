@@ -44,6 +44,8 @@ namespace VillageBuildingReservation.Models
         [DisplayName("ملاحظات")]
         public string  Notes { get; set; }
 
+        public bool IsAttended { get; set; }
+
         public virtual ICollection<Block> Blocks { get; set; }
         public virtual ICollection<Bombs> Bombs { get; set; }
 
