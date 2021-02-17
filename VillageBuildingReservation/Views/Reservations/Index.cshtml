@@ -16,14 +16,14 @@
         <div class="form-group">
             @Html.Label("السنة", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-3">
-                @Html.DropDownListFor(m => m.Year,Model.DDlYear,new {@class="form-control" })
+                @Html.DropDownListFor(m => m.Year, Model.DDlYear, new { @class = "form-control" })
 
             </div>
             @Html.Label("الشهر", htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-3">
-            @Html.DropDownListFor(m => m.Month, Model.DDlMonth, new { @class = "form-control" })
+            <div class="col-md-3">
+                @Html.DropDownListFor(m => m.Month, Model.DDlMonth, new { @class = "form-control" })
 
-        </div>
+            </div>
             <div class="col-md-2">
                 <input type="submit" value="اختيار" class="btn btn-default" />
             </div>
@@ -59,70 +59,70 @@
     }
 }
 <h2 class="text-center">@GlobalController.ArabicMonthName(Model.Month) @Model.Year </h2>
-    <table class="table dataTable" id="Reservation_table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Reservations.First().ReservationName)
-                </th>
-                <th>
-                    @Html.DisplayName("المباني المحجوزة")
-                </th>
-                <th>
-                    @Html.DisplayName("الأعتدة المستخدمة")
-                </th>
-                <th class="reservDatefixedwidth">
-                    @Html.DisplayNameFor(model => model.Reservations.First().ReservationDate)
-                </th>
-                <th>تأكيد الحضور</th>
+<table class="table dataTable" id="Reservation_table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Reservations.First().ReservationName)
+            </th>
+            <th>
+                @Html.DisplayName("المباني المحجوزة")
+            </th>
+            <th>
+                @Html.DisplayName("الأعتدة المستخدمة")
+            </th>
+            <th class="reservDatefixedwidth">
+                @Html.DisplayNameFor(model => model.Reservations.First().ReservationDate)
+            </th>
+            <th>تأكيد الحضور</th>
 
-                <th class="no-sort">
-                    @Html.DisplayNameFor(model => model.Reservations.First().StartTime)
-                </th>
-                <th class="no-sort">
-                    @Html.DisplayNameFor(model => model.Reservations.First().EndTime)
-                </th>
-                <th class="no-sort">
-                    @Html.DisplayNameFor(model => model.Reservations.First().DocumentNumber)
-                </th>
-                <th class="no-sort">
-                    @Html.DisplayNameFor(model => model.Reservations.First().Notes)
-                </th>
-                @if (@Request.IsAuthenticated)
-                {
-                    if (User.IsInRole("admin"))
-                    {
-                        <th></th>
-                    }
-                }
-            </tr>
-
-        </thead>
-        <tbody>
-            @foreach (var item in Model.Reservations)
+            <th class="no-sort">
+                @Html.DisplayNameFor(model => model.Reservations.First().StartTime)
+            </th>
+            <th class="no-sort">
+                @Html.DisplayNameFor(model => model.Reservations.First().EndTime)
+            </th>
+            <th class="no-sort">
+                @Html.DisplayNameFor(model => model.Reservations.First().DocumentNumber)
+            </th>
+            <th class="no-sort">
+                @Html.DisplayNameFor(model => model.Reservations.First().Notes)
+            </th>
+            @if (@Request.IsAuthenticated)
             {
-                var AttendanceTdId = "AttendanceTd" + item.Id;
-                // red _ orange --> #FF4500
-                // orange --> ffa500
-                var backcolor = "";
-                bool isEmpty = ReservationsController.IsEmptyReservation(item);
-                // only reservation Empty and need barkya
-                if (isEmpty && item.IsNeedBarkya)
+                if (User.IsInRole("admin"))
                 {
-                    backcolor = "orange"; //red - yellow -- > orange
+                    <th></th>
                 }
-                if (isEmpty && !item.IsNeedBarkya)
-                {
-                    backcolor = "yellow"; //  yellow
-                }
-                if (!isEmpty && item.IsNeedBarkya)
-                {
-                    backcolor = "red"; // red
-                }
-                if (!isEmpty && !item.IsNeedBarkya)
-                {
-                    backcolor = "white"; // white
-                }
+            }
+        </tr>
+
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Reservations)
+        {
+            var AttendanceTdId = "AttendanceTd" + item.Id;
+            // red _ orange --> #FF4500
+            // orange --> ffa500
+            var backcolor = "";
+            bool isEmpty = ReservationsController.IsEmptyReservation(item);
+            // only reservation Empty and need barkya
+            if (isEmpty && item.IsNeedBarkya)
+            {
+                backcolor = "orange"; //red - yellow -- > orange
+            }
+            if (isEmpty && !item.IsNeedBarkya)
+            {
+                backcolor = "yellow"; //  yellow
+            }
+            if (!isEmpty && item.IsNeedBarkya)
+            {
+                backcolor = "red"; // red
+            }
+            if (!isEmpty && !item.IsNeedBarkya)
+            {
+                backcolor = "white"; // white
+            }
 
 
             <tr style="background:@backcolor">
@@ -188,11 +188,14 @@
                     }
                 }
             </tr>
-            }
+        }
 
-        </tbody>
-    </table>
+    </tbody>
+</table>
 
+<div id="confirm-approve-attendance" title="تأكيد الحضور" style="display:none">
+    <p>هل تريد تأكيد الحضور ؟ </p>
+</div>
 
 
 @section Scripts {
@@ -218,7 +221,7 @@
             $option.attr('selected', true);
         });
 
-                $('.listreservationlink').addClass("active");
+        $('.listreservationlink').addClass("active");
 
     </script>
 
@@ -226,32 +229,64 @@
     <script>
 
         $('.btnApproveAttendance').click(function () {
-        
-            var ReservationId  = this.id;
-            $.ajax({
-                url: "/Reservations/ApproveAttendance",
-                method: "Post",
-                data: {
-                    id: ReservationId,
+
+            var ReservationId = this.id;
+            $('#confirm-approve-attendance').dialog({
+                height: "auto",
+                width: 500,
+                modal: true,
+                buttons: {
+                    'تاكيد': function () {
+                        $.ajax({
+                            url: "/Reservations/ApproveAttendance",
+                            method: "Post",
+                            data: {
+                                id: ReservationId,
+                            }
+                        }).done(function () {
+                            $('#AttendanceTd' + ReservationId).empty();
+                            $('#AttendanceTd' + ReservationId).html('<img class="AttendedImage" src="/Media/IsAttendedImage.png"/>');
+
+                            console.log('#AttendanceTd' + ReservationId);
+                        }).
+                            error(function () {
+                                alert("Update Error");
+                            }); $(this).dialog('close')
+                    },
+                    'الغاء': function () {
+                        $(this).dialog('close')
+                    }
                 }
-            }).done(function () {
-                $('#AttendanceTd' + ReservationId).empty();
-                $('#AttendanceTd' + ReservationId).html('<img class="AttendedImage" src="/Media/IsAttendedImage.png"/>');
+            })
 
-                console.log('#AttendanceTd' + ReservationId);
-
-
-                
-
-            }).
-                error(function () {
-                    alert("Update Error");
-                });
         });
 
     </script>
- 
+
 }
 @section Styles {
     @Styles.Render("~/Content/DataTables")
+
+    <style>
+        .ui-dialog-titlebar-close {
+            right: unset !important;
+        }
+
+        .ui-dialog-title {
+            float: right !important;
+            width: unset !important;
+        }
+        #confirm-approve-attendance > p {
+            float:right;
+        }
+        .ui-widget-header {
+            background: #2f7dcb !important;
+        }
+        .ui-dialog-titlebar-close {
+            display:none;
+        }
+        .ui-dialog {
+            width:300px !important;
+        }
+    </style>
 }
