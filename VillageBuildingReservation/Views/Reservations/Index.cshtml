@@ -88,13 +88,7 @@
             <th class="no-sort">
                 @Html.DisplayNameFor(model => model.Reservations.First().Notes)
             </th>
-            @if (@Request.IsAuthenticated)
-            {
-                if (User.IsInRole("admin"))
-                {
-                    <th></th>
-                }
-            }
+            <th></th>
         </tr>
 
     </thead>
@@ -125,81 +119,84 @@
             }
 
 
-            <tr style="background:@backcolor">
+        <tr style="background:@backcolor">
 
 
-                <td style="font-size:16px">
-                    <b>@Html.DisplayFor(modelItem => item.ReservationName)</b>
-                </td>
-                <td>
-                    @ReservationsController.GetAllReservationBlocks_Of_Reservation(item)
-                </td>
-                <td>
-                    @ReservationsController.GetAllReservationBombs_Of_Reservation(item)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ReservationDate)
-                </td>
-                <td id="@AttendanceTdId" data-isAttented="@item.IsAttended" data-id="@item.Id">
-                    @if(item.IsAttended != null && item.IsAttended == true)
+            <td style="font-size:16px">
+                <b>@Html.DisplayFor(modelItem => item.ReservationName)</b>
+            </td>
+            <td>
+                @ReservationsController.GetAllReservationBlocks_Of_Reservation(item)
+            </td>
+            <td>
+                @ReservationsController.GetAllReservationBombs_Of_Reservation(item)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReservationDate)
+            </td>
+            <td id="@AttendanceTdId" data-isAttented="@item.IsAttended" data-id="@item.Id">
+                @if (item.IsAttended != null && item.IsAttended == true)
+                {
+                    <img class="AttendedImage" src="~/Media/IsAttendedImage.png" />
+                }
+                else
+                {
+                    if (item.IsAttended == false)
                     {
-                        <img class="AttendedImage" src="~/Media/IsAttendedImage.png" />
+                        <img class="NotAttendedImage" src="~/Media/IsNotAttendedImage.png" />
+
                     }
                     else
                     {
-                        if (item.IsAttended == false)
+                        if (Request.IsAuthenticated)
                         {
-                            <img class="NotAttendedImage" src="~/Media/IsNotAttendedImage.png" />
-
-                        }
-                        else
-                        {
-                            if (Request.IsAuthenticated)
+                            if (User.IsInRole("admin"))
                             {
-                                if (User.IsInRole("admin"))
-                                {
-                                    <a id="@item.Id" class="btn btn-danger btnApproveAttendance">تأكيد الحضور</a>
-                                }
-                                else
-                                {
-                                    @Html.Label("-")
-                                }
+                                <a id="@item.Id" class="btn btn-danger btnApproveAttendance">تأكيد الحضور</a>
+                            }
+                            else
+                            {
+                                @Html.Label("-")
                             }
                         }
                     }
-                    
+                }
 
 
 
 
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StartTime)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EndTime)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DocumentNumber)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Notes)
-                </td>
 
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DocumentNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Notes)
+            </td>
+
+
+            <td>
                 @if (@Request.IsAuthenticated)
                 {
-                    if (User.IsInRole("admin"))
+                    if (User.IsInRole("admin") || User.IsInRole("SuperAdmin"))
                     {
-                        <td>
 
-                            @Html.ActionLink("تعديل", "Edit", new { id = item.Id }) @("|")
-                            @Html.ActionLink("حذف", "Delete", new { id = item.Id })
-                        </td>
-
-
+                        @Html.ActionLink("تعديل", "Edit", new { id = item.Id }) @("|")
+                        @Html.ActionLink("حذف", "Delete", new { id = item.Id })
                     }
                 }
-            </tr>
+            </td>
+
+
+
+
+        </tr>
         }
 
     </tbody>

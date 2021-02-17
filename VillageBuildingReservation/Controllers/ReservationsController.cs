@@ -21,7 +21,7 @@ namespace VillageBuildingReservation.Controllers
 
         // GET: Reservations
         [HttpGet]
-        [Authorize(Roles = "admin ,general")]
+        [Authorize(Roles = "SuperAdmin,admin ,general")]
         public ActionResult Index()
         {
             DateTime CurrentDate = DateTime.Now;
