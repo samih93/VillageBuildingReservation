@@ -141,24 +141,36 @@
                     @Html.DisplayFor(modelItem => item.ReservationDate)
                 </td>
                 <td id="@AttendanceTdId" data-isAttented="@item.IsAttended" data-id="@item.Id">
-                    @if (item.IsAttended)
+                    @if(item.IsAttended != null && item.IsAttended == true)
                     {
                         <img class="AttendedImage" src="~/Media/IsAttendedImage.png" />
                     }
                     else
                     {
-                        if (Request.IsAuthenticated)
+                        if (item.IsAttended != null && item.IsAttended == false)
                         {
-                            if (User.IsInRole("admin"))
+                            <img class="NotAttendedImage" src="~/Media/IsNotAttendedImage.png" />
+
+                        }
+                        else
+                        {
+                            if (Request.IsAuthenticated)
                             {
-                                <a id="@item.Id" class="btn btn-danger btnApproveAttendance">تأكيد الحضور</a>
-                            }
-                            else
-                            {
-                                @Html.Label("-")
+                                if (User.IsInRole("admin"))
+                                {
+                                    <a id="@item.Id" class="btn btn-danger btnApproveAttendance">تأكيد الحضور</a>
+                                }
+                                else
+                                {
+                                    @Html.Label("-")
+                                }
                             }
                         }
                     }
+                    
+
+
+
 
                 </td>
                 <td>
@@ -233,15 +245,16 @@
             var ReservationId = this.id;
             $('#confirm-approve-attendance').dialog({
                 height: "auto",
-                width: 500,
+                width: 300,
                 modal: true,
                 buttons: {
-                    'تاكيد': function () {
+                    'حضر': function () {
                         $.ajax({
                             url: "/Reservations/ApproveAttendance",
                             method: "Post",
                             data: {
                                 id: ReservationId,
+                                flag: true
                             }
                         }).done(function () {
                             $('#AttendanceTd' + ReservationId).empty();
@@ -251,10 +264,28 @@
                         }).
                             error(function () {
                                 alert("Update Error");
-                            }); $(this).dialog('close')
-                    },
-                    'الغاء': function () {
+                            });
                         $(this).dialog('close')
+                    },
+                    'لم يحضر': function () {
+                        $.ajax({
+                            url: "/Reservations/ApproveAttendance",
+                            method: "Post",
+                            data: {
+                                id: ReservationId,
+                                flag: false
+                            }
+                        }).done(function () {
+                            $('#AttendanceTd' + ReservationId).empty();
+                            $('#AttendanceTd' + ReservationId).html('<img class="NotAttendedImage" src="/Media/IsNotAttendedImage.png"/>');
+
+                            console.log('#AttendanceTd' + ReservationId);
+                        }).
+                            error(function () {
+                                alert("Update Error");
+                            });
+                        $(this).dialog('close')
+
                     }
                 }
             })
@@ -285,8 +316,6 @@
         .ui-dialog-titlebar-close {
             display:none;
         }
-        .ui-dialog {
-            width:300px !important;
-        }
+        
     </style>
 }

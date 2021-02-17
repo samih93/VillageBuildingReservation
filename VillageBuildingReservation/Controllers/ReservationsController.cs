@@ -468,7 +468,7 @@ namespace VillageBuildingReservation.Controllers
         }
 
         [HttpPost]
-        public ActionResult ApproveAttendance(int id)
+        public ActionResult ApproveAttendance(int id , bool flag)
         {
             Reservation reservation = db.Reservations.Find(id);
             if (reservation == null)
@@ -477,7 +477,7 @@ namespace VillageBuildingReservation.Controllers
                 return RedirectToAction("Index");
             }
 
-            reservation.IsAttended = true;
+            reservation.IsAttended = flag;
             db.Entry(reservation).State = EntityState.Modified;
             db.SaveChanges();
             TempData["message"] = MessagingSystem.AddMessage("تم تأكيد الحضور", "danger");
