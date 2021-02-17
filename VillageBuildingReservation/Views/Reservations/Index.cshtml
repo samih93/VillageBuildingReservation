@@ -62,7 +62,6 @@
     <table class="table dataTable" id="Reservation_table">
         <thead>
             <tr>
-                <th>الحضور</th>
                 <th>
                     @Html.DisplayNameFor(model => model.Reservations.First().ReservationName)
                 </th>
@@ -75,6 +74,7 @@
                 <th class="reservDatefixedwidth">
                     @Html.DisplayNameFor(model => model.Reservations.First().ReservationDate)
                 </th>
+                <th>تأكيد الحضور</th>
 
                 <th class="no-sort">
                     @Html.DisplayNameFor(model => model.Reservations.First().StartTime)
@@ -126,28 +126,8 @@
 
 
             <tr style="background:@backcolor">
-               
-                <td id="@AttendanceTdId" data-isAttented="@item.IsAttended" data-id="@item.Id">
-                    @if (item.IsAttended)
-                    {
-                        <img class="AttendedImage" src="~/Media/IsAttendedImage.png" />
-                    }
-                    else
-                    {
-                        if(Request.IsAuthenticated)
-                        {
-                            if (User.IsInRole("admin"))
-                            {
-                                <a id="@item.Id" class="btn btn-danger btnApproveAttendance">تأكيد الحضور</a>
-                            }
-                            else 
-                            {
-                               @Html.Label("-")
-                            }
-                        }
-                    }
 
-                        </td>
+
                 <td style="font-size:16px">
                     <b>@Html.DisplayFor(modelItem => item.ReservationName)</b>
                 </td>
@@ -160,7 +140,27 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.ReservationDate)
                 </td>
+                <td id="@AttendanceTdId" data-isAttented="@item.IsAttended" data-id="@item.Id">
+                    @if (item.IsAttended)
+                    {
+                        <img class="AttendedImage" src="~/Media/IsAttendedImage.png" />
+                    }
+                    else
+                    {
+                        if (Request.IsAuthenticated)
+                        {
+                            if (User.IsInRole("admin"))
+                            {
+                                <a id="@item.Id" class="btn btn-danger btnApproveAttendance">تأكيد الحضور</a>
+                            }
+                            else
+                            {
+                                @Html.Label("-")
+                            }
+                        }
+                    }
 
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.StartTime)
                 </td>
