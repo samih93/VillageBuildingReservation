@@ -1,4 +1,4 @@
-# VillageBuildingReservation
+# Web Application -  VillageBuildingReservation
 # details : 
 - Map image
 - using https://www.image-map.net to set all coords in that Map 
